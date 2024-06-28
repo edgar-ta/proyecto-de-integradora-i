@@ -15,5 +15,11 @@
     height: 1px;
     width: 100%;
     background-color: #FDE047;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 200ms ease-in-out width;
+}
+
+.header__menu-item:hover::after {
+    width: 0;
 }

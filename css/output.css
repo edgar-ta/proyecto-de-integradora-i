@@ -638,6 +638,42 @@ video {
   top: -220px;
 }
 
+.-right-1\/2 {
+  right: -50%;
+}
+
+.right-1\/2 {
+  right: 50%;
+}
+
+.-right-1\/4 {
+  right: -25%;
+}
+
+.-bottom-1\/4 {
+  bottom: -25%;
+}
+
+.-bottom-full {
+  bottom: -100%;
+}
+
+.-bottom-1\/2 {
+  bottom: -50%;
+}
+
+.left-48 {
+  left: 12rem;
+}
+
+.left-12 {
+  left: 3rem;
+}
+
+.left-24 {
+  left: 6rem;
+}
+
 .isolate {
   isolation: isolate;
 }
@@ -650,12 +686,28 @@ video {
   z-index: 10;
 }
 
+.z-20 {
+  z-index: 20;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
 .col-span-2 {
   grid-column: span 2 / span 2;
 }
 
 .ml-auto {
   margin-left: auto;
+}
+
+.mb-\[1rem\] {
+  margin-bottom: 1rem;
+}
+
+.mb-\[2rem\] {
+  margin-bottom: 2rem;
 }
 
 .flex {
@@ -690,6 +742,10 @@ video {
   min-height: 100vh;
 }
 
+.min-h-\[150vh\] {
+  min-height: 150vh;
+}
+
 .w-full {
   width: 100%;
 }
@@ -697,6 +753,22 @@ video {
 .w-max {
   width: -moz-max-content;
   width: max-content;
+}
+
+.w-2\/3 {
+  width: 66.666667%;
+}
+
+.w-1\/3 {
+  width: 33.333333%;
+}
+
+.w-1\/4 {
+  width: 25%;
+}
+
+.w-1\/2 {
+  width: 50%;
 }
 
 .max-w-full {
@@ -710,6 +782,11 @@ video {
 
 .-translate-y-1\/2 {
   --tw-translate-y: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.-translate-x-2\/3 {
+  --tw-translate-x: -66.666667%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -779,6 +856,10 @@ video {
   gap: 3rem;
 }
 
+.overflow-clip {
+  overflow: clip;
+}
+
 .bg-emerald-950 {
   --tw-bg-opacity: 1;
   background-color: rgb(2 44 34 / var(--tw-bg-opacity));
@@ -787,6 +868,30 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-\[url\(\'\/assets\/\'\)\] {
+  background-image: url('/assets/');
+}
+
+.bg-\[url\(\'\/assets\/header-lines\.svg\'\)\] {
+  background-image: url('/assets/header-lines.svg');
+}
+
+.bg-\[url\(\'\/assets\/index-lines\.svg\'\)\] {
+  background-image: url('/assets/index-lines.svg');
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-contain {
+  background-size: contain;
+}
+
+.bg-repeat {
+  background-repeat: repeat;
 }
 
 .p-8 {
@@ -820,6 +925,10 @@ video {
   font-family: 'Krona One';
 }
 
+.font-\[Inter\] {
+  font-family: Inter;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -848,8 +957,49 @@ video {
   font-size: 12rem;
 }
 
+.text-\[10rem\] {
+  font-size: 10rem;
+}
+
+.text-\[8rem\] {
+  font-size: 8rem;
+}
+
+.text-\[6\.5rem\] {
+  font-size: 6.5rem;
+}
+
+.text-\[7rem\] {
+  font-size: 7rem;
+}
+
+.text-\[6rem\] {
+  font-size: 6rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .uppercase {
   text-transform: uppercase;
+}
+
+.leading-3 {
+  line-height: .75rem;
+}
+
+.leading-9 {
+  line-height: 2.25rem;
+}
+
+.leading-tight {
+  line-height: 1.25;
+}
+
+.leading-\[1\] {
+  line-height: 1;
 }
 
 .text-white {
@@ -871,8 +1021,16 @@ video {
   mix-blend-mode: color-dodge;
 }
 
+.mix-blend-difference {
+  mix-blend-mode: difference;
+}
+
 .mix-blend-exclusion {
   mix-blend-mode: exclusion;
+}
+
+.outline-white {
+  outline-color: #fff;
 }
 
 .before\:absolute::before {

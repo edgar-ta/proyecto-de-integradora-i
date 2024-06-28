@@ -15,7 +15,11 @@
 
     <title>EcoFilament</title>
 </head>
-<body>
+<body class="
+bg-[url('/assets/index-lines.svg')]
+bg-contain
+bg-repeat
+">
 
     <header class="
     w-full
@@ -62,19 +66,20 @@
                 <img src="/assets/dart-logo--white.svg" alt="Logo de Dart" class="ml-auto max-h-full">
             </nav>
 
-            <p class="
+            <a class="
             absolute
             bottom-[-10px]
             left-1/2
             -translate-x-1/2
             text-6xl
             text-white
-            ">
+            "
+            >
                 solucionemos
-            </p>
+            </a>
         </div>
         <div class="
-        bg-white px-48
+        px-48
         relative
         ">
             <div class="
@@ -85,27 +90,28 @@
             flex
             flex-col
             items-center
-            z-10
+            z-20
             ">
-                <p class="
+                <a class="
                 text-7xl
                 text-emerald-950
                 text-center
                 w-max
-                ">
+                "
+                >
                     el problema del
-                </p>
-                <p class="
+                </a>
+                <a class="
                 text-[12rem]
                 text-black
                 text-center
                 w-max
                 ">
                     plástico
-                </p>
+                </a>
             </div>
 
-            <img src="/assets/portada--botella-de-plástico-1.png" alt="" class="absolute left-0 scale-75 ">
+            <img src="/assets/portada--botella-de-plástico-1.png" alt="" class="absolute left-0 scale-75 z-10">
             <img src="/assets/portada--botella-de-plástico-2.png" alt="" class="absolute right-0 top-1/2 -translate-y-1/2 scale-[0.7] ">
         </div>
     </header>
