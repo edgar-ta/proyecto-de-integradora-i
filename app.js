@@ -1,6 +1,6 @@
 import express from "express";
 import { env } from "process";
-import userRoutes from "./routes.js";
+import { route } from "./routes.js";
 
 const app = express();
 
@@ -12,4 +12,4 @@ app.listen(port, () => {
 
 app.set("view engine", "ejs");
 
-app.use("/", userRoutes);
+app.use("/", route);
