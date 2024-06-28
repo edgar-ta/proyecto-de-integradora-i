@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       colors: {
         snow: "#ffffff"
+      },
+      fontFamily: {
+        krona: [ '"Krona One"', 'sans-serif' ]
       }
     },
   },

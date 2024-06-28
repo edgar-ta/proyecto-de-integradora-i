@@ -17,40 +17,96 @@
 </head>
 <body>
 
-    <nav class="
-    fixed
-    ">
-        <ul>
-            <li>
-                <a href="">El problema</a>
-            </li>
-            <li>
-                <a href="">La propuesta</a>
-            </li>
-            <li>
-                <a href="">El problema</a>
-            </li>
-        </ul>
-        <img src="/assets/dart-logo--white.svg" alt="Logo de Dart">
-    </nav>
-
     <header class="
     w-full
     grid
     grid-cols-1
     grid-rows-[1fr_2fr]
     min-h-screen
+    font-['Krona_One']
+    uppercase
     ">
         <div class="
         bg-emerald-950 px-48
+        relative
+        before:absolute
+        before:inset-0
+        before:bg-[url('/assets/header-lines.svg')]
+        before:bg-cover
+        before:opacity-40
         ">
-            <p>solucionemos</p>
+
+            <nav class="
+            flex
+            h-24
+            p-4
+            items-center
+            gap-12
+            ">
+                <ul class="
+                contents
+                ">
+                    <li class="header__menu-item">
+                        <a href="">El problema</a>
+                    </li>
+                    <li class="header__menu-item">
+                        <a href="">La propuesta</a>
+                    </li>
+                    <li class="header__menu-item">
+                        <a href="">Nuestro equipo</a>
+                    </li>
+                    <li class="header__menu-item">
+                        <a href="">Inicio</a>
+                    </li>
+                </ul>
+                <img src="/assets/dart-logo--white.svg" alt="Logo de Dart" class="ml-auto max-h-full">
+            </nav>
+
+            <p class="
+            absolute
+            bottom-[-10px]
+            left-1/2
+            -translate-x-1/2
+            text-6xl
+            text-white
+            ">
+                solucionemos
+            </p>
         </div>
         <div class="
         bg-white px-48
+        relative
         ">
-            <p>el problema del</p>
-            <p>plástico</p>
+            <div class="
+            absolute
+            top-[-10px]
+            left-1/2
+            -translate-x-1/2
+            flex
+            flex-col
+            items-center
+            z-10
+            ">
+                <p class="
+                text-7xl
+                text-emerald-950
+                text-center
+                w-max
+                ">
+                    el problema del
+                </p>
+                <p class="
+                text-[12rem]
+                text-black
+                text-center
+                w-max
+                ">
+                    plástico
+                </p>
+            </div>
+
+            <img src="/assets/portada--botella-de-plástico-1.png" alt="" class="absolute left-0 scale-75 ">
+            <img src="/assets/portada--botella-de-plástico-2.png" alt="" class="absolute right-0 top-1/2 -translate-y-1/2 scale-[0.7] ">
         </div>
     </header>
     <main>
