@@ -10,6 +10,7 @@ app.listen(port, () => {
     console.log(`http://localhost:${port}`);
 });
 
+app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 app.use("/", route);

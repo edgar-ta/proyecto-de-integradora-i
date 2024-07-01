@@ -1,0 +1,27 @@
+
+.form__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__input > input {
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+    transition: 200ms ease-in-out border-bottom-color; 
+}
+
+.form__input > input:focus {
+    outline: none;
+    border-bottom: 1px solid black;
+}
+
+.form__input > span {
+    margin-left: 1rem;
+    text-transform: uppercase;
+    font-size: x-small;
+}
+
+.list__item {
+    margin-left: 1rem;
+}
