@@ -5,16 +5,16 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { OpinionController } from "./db/opinion.js";
 
-const route = Router();
+const router = Router();
 
 const __filepath = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filepath);
 
-route.get("/", (_, response) => {
+router.get(/^\/(home)?$/, (_, response) => {
     response.render("index");
 })
 
-route.post("/", (request, response) => {
+router.post(/^\/(home)?$/, (request, response) => {
     const controller = new OpinionController();
     console.log(request.body);
     controller.add(request.body);
@@ -22,10 +22,17 @@ route.post("/", (request, response) => {
     response.render("index");
 });
 
-route.use("/css", express.static(path.join(__dirname, "css")));
-route.use("/js", express.static(path.join(__dirname, "js")));
-route.use("/assets", express.static(path.join(__dirname, "assets")));
+router.get("/about-us", (_, response) => {
+    response.render("about-us");
+});
+
+
+// route.get("/app");
+
+router.use("/css", express.static(path.join(__dirname, "css")));
+router.use("/js", express.static(path.join(__dirname, "js")));
+router.use("/assets", express.static(path.join(__dirname, "assets")));
 
 export { 
-    route 
+    router as route 
 };

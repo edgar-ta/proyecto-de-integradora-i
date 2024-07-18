@@ -1,0 +1,31 @@
+
+<form action="/app/signup" method="post">
+    <section>
+        <label for="fullNameInput">Nombre completo</label>
+        <input type="text" name="fullName" id="fullNameInput" autocomplete="name" required>
+    </section>
+    <section>
+        <label for="genderInput">Género</label>
+        <select name="gender" id="genderInput" required>
+            <option value="0">Masculino</option>
+            <option value="0">Femenino</option>
+            <option value="0">Otro</option>
+        </select>
+    </section>
+    <section>
+        <label for="emailInput">Correo electrónico</label>
+        <input type="email" name="email" id="emailInput" autocomplete="email" required>
+    </section>
+    <section>
+        <label for="usernameInput">Nombre de usuario</label>
+        <input type="text" name="username" id="usernameInput" autocomplete="username" required>
+    </section>
+    <section>
+        <label for="passwordInput">Contraseña</label>
+        <input type="password" name="password" id="passwordInput" autocomplete="current-password" required>
+    </section>
+    <button type="submit">Iniciar sesión</button>
+    <p>Regístrate o <a href="/app/login">inicia sesión</a></p>
+</form>
+
+<%- include('./templates/footer.ejs') %>

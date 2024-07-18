@@ -1,0 +1,15 @@
+
+<form action="/app/login" method="post">
+    <section>
+        <label for="usernameInput">Nombre de usuario</label>
+        <input type="text" name="username" id="usernameInput" autocomplete="username">
+    </section>
+    <section>
+        <label for="passwordInput">Contraseña</label>
+        <input type="password" name="password" id="passwordInput" autocomplete="current-password">
+    </section>
+    <button type="submit">Iniciar sesión</button>
+    <p>Inicia sesión o <a href="/app/signup">regístrate</a></p>
+</form>
+
+<%- include('./templates/footer.ejs') %>
