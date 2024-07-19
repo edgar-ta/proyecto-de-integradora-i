@@ -2,6 +2,7 @@
 .form__input {
     display: flex;
     flex-direction: column;
+    font-family: Inter;
 }
 
 .form__input > input {
@@ -24,4 +25,18 @@
 
 .list__item {
     margin-left: 1rem;
+}
+
+.form__input--submit {
+    color: white;
+    background-color: #022c22;
+    padding: 1rem;
+    width: 100%;
+    cursor: pointer;
+    display: initial;
+    transition: 200ms ease-in-out background-color;
+}
+
+.form__input--submit:hover {
+    background-color: #065f46;
 }

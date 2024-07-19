@@ -7,7 +7,8 @@ module.exports = {
         snow: "#ffffff"
       },
       fontFamily: {
-        krona: [ '"Krona One"', 'sans-serif' ]
+        krona: [ '"Krona One"', 'sans-serif' ],
+        inter: [ 'Inter', 'sans-serif' ]
       }
     },
   },

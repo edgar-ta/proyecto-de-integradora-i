@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Edgar Trejo Avila">
-    <link rel="stylesheet" href="/css/output.css">
+<%- include('./head.ejs'); %>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@100..900&family=Krona+One&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="/css/header.css">
-
-    <title>EcoFilament</title>
-</head>
 <body class="
 bg-[url('/assets/index-lines.svg')]
 bg-contain
@@ -40,43 +25,9 @@ bg-repeat
         before:opacity-40
         ">
 
-            <nav class="
-            flex
-            h-24
-            p-4
-            items-center
-            gap-12
-            ">
-                <ul class="
-                contents
-                ">
-                    <li class="header__menu-item">
-                        <a href="">El problema</a>
-                    </li>
-                    <li class="header__menu-item">
-                        <a href="">La propuesta</a>
-                    </li>
-                    <li class="header__menu-item">
-                        <a href="">Nuestro equipo</a>
-                    </li>
-                    <li class="header__menu-item">
-                        <a href="">Inicio</a>
-                    </li>
-                </ul>
-                <img src="/assets/dart-logo--white.svg" alt="Logo de Dart" class="ml-auto max-h-full">
-            </nav>
+        <%- include('./navbar.ejs'); %>
 
-            <a class="
-            absolute
-            bottom-[-10px]
-            left-1/2
-            -translate-x-1/2
-            text-6xl
-            text-white
-            "
-            >
-                solucionemos
-            </a>
+
         </div>
         <div class="
         px-48
@@ -92,6 +43,18 @@ bg-repeat
             items-center
             z-20
             ">
+                <a class="
+                absolute
+                bottom-full
+                left-1/2
+                -translate-x-1/2
+                translate-y-5
+                text-6xl
+                text-white
+                "
+                >
+                    solucionemos
+                </a>
                 <a class="
                 text-7xl
                 text-emerald-950

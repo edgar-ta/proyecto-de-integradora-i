@@ -1,0 +1,33 @@
+<%- include('./head.ejs'); %>
+
+<body class="
+bg-[url('/assets/index-lines.svg')]
+bg-contain
+bg-repeat
+">
+
+    <header class="
+    w-full
+    grid
+    grid-cols-1
+    font-['Krona_One']
+    uppercase
+    ">
+        <div class="
+        bg-emerald-950 
+        px-48
+        relative
+        before:absolute
+        before:inset-0
+        before:bg-[url('/assets/header-lines.svg')]
+        before:bg-cover
+        before:opacity-40
+        h-32
+        ">
+
+        <%- include('./navbar.ejs'); %>
+
+
+        </div>
+    </header>
+    <main>

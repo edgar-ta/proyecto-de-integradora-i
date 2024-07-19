@@ -1,15 +1,61 @@
+<%- include('./templates/short-header.ejs') %>
 
-<form action="/app/login" method="post">
-    <section>
-        <label for="usernameInput">Nombre de usuario</label>
-        <input type="text" name="username" id="usernameInput" autocomplete="username">
-    </section>
-    <section>
-        <label for="passwordInput">Contraseña</label>
-        <input type="password" name="password" id="passwordInput" autocomplete="current-password">
-    </section>
-    <button type="submit">Iniciar sesión</button>
-    <p>Inicia sesión o <a href="/app/signup">regístrate</a></p>
-</form>
+<link rel="stylesheet" href="/css/form.css">
+<div class="
+w-full
+h-fit
+py-16
+flex
+flex-col
+items-center
+justify-center
+
+">
+    <h1 class="
+    font-krona
+    text-6xl
+    ">Iniciar sesión</h1>
+    <p class="
+    font-inter
+    text-2xl
+    ">
+        Ingresa tus datos para entrar a tu cuenta
+    </p>
+    <div class="
+    grid
+    grid-cols-2
+    bg-white
+    shadow-md
+    p-8
+    w-3/4
+    gap-4
+    rounded-xl
+    ">
+        <img src="/assets/portada--botella-de-plástico-1.png" alt="" srcset="">
+        <form action="/app/login" method="post" class="flex flex-col justify-between">
+            <section class="
+            space-y-12
+            mb-auto
+            ">
+                <label for="usernameInput" class="form__input">
+                    <span>
+                        Nombre de usuario
+                    </span>
+                    <input type="text" name="username" id="usernameInput" autocomplete="username" placeholder="Usuario de ejemplo" required>
+                </label>
+                <label for="passwordInput" class="form__input">
+                    <span>
+                        Contraseña
+                    </span>
+                    <input type="password" name="password" id="passwordInput" autocomplete="current-password" placeholder="*****" required>
+                </label>
+            </section>
+            <div class="space-y-6">
+                <button type="submit" class="form__input--submit">Iniciar sesión</button>
+                <p class="text-center">¿No tienes una cuenta? <a href="/app/signup" class="text-green-950 underline">Regístrate</a></p>
+            </div>
+        </form>
+    </div>
+</div>
 
 <%- include('./templates/footer.ejs') %>
