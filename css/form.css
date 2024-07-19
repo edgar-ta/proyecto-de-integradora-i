@@ -5,7 +5,7 @@
     font-family: Inter;
 }
 
-.form__input > input {
+.form__input > input, .form__input > select {
     padding-inline: 1rem;
     padding-block: 0.5rem;
     border-bottom: 1px solid #e0e0e0;

@@ -1,31 +1,79 @@
+<%- include('./templates/short-header.ejs') %>
 
-<form action="/app/signup" method="post">
-    <section>
-        <label for="fullNameInput">Nombre completo</label>
-        <input type="text" name="fullName" id="fullNameInput" autocomplete="name" required>
-    </section>
-    <section>
-        <label for="genderInput">Género</label>
-        <select name="gender" id="genderInput" required>
-            <option value="0">Masculino</option>
-            <option value="0">Femenino</option>
-            <option value="0">Otro</option>
-        </select>
-    </section>
-    <section>
-        <label for="emailInput">Correo electrónico</label>
-        <input type="email" name="email" id="emailInput" autocomplete="email" required>
-    </section>
-    <section>
-        <label for="usernameInput">Nombre de usuario</label>
-        <input type="text" name="username" id="usernameInput" autocomplete="username" required>
-    </section>
-    <section>
-        <label for="passwordInput">Contraseña</label>
-        <input type="password" name="password" id="passwordInput" autocomplete="current-password" required>
-    </section>
-    <button type="submit">Regístrate</button>
-    <p>Regístrate o <a href="/app/login">inicia sesión</a></p>
-</form>
+
+<link rel="stylesheet" href="/css/form.css">
+<div class="
+w-full
+h-fit
+py-16
+flex
+flex-col
+items-center
+justify-center
+">
+    <h1 class="
+    font-krona
+    text-6xl
+    ">Regístrate</h1>
+    <p class="
+    font-inter
+    text-2xl
+    mb-16
+    ">
+        Crea una nueva cuenta
+    </p>
+    <form action="/app/signup" method="post" class="
+        grid
+        grid-cols-2
+        bg-white
+        shadow-2xl
+        p-8
+        w-3/4
+        gap-4
+        rounded-xl
+        gap-y-12
+        ">
+            <label for="fullNameInput" class="form__input">
+                <span>
+                    Nombre completo
+                </span>
+                <input type="text" name="fullName" id="fullNameInput" autocomplete="name" required placeholder="Juan Pérez Pérez">
+            </label>
+            <label for="genderInput" class="form__input">
+                <span>
+                    Género
+                </span>
+                <select name="gender" id="genderInput" required>
+                    <option value="0">Masculino</option>
+                    <option value="0">Femenino</option>
+                    <option value="0">Otro</option>
+                </select>
+            </label>
+            <label for="emailInput" class="form__input">
+                <span>
+                    Correo electrónico
+                </span>
+                <input type="email" name="email" id="emailInput" autocomplete="email" required placeholder="correo@ejemplo.com">
+            </label>
+            <label for="usernameInput" class="form__input">
+                <span>
+                    Nombre de usuario
+                </span>
+                <input type="text" name="username" id="usernameInput" autocomplete="username" required placeholder="usuario123">
+            </label>
+            <label for="passwordInput" class="form__input">
+                <span>
+                    Contraseña
+                </span>
+                <input type="password" name="password" id="passwordInput" autocomplete="current-password" required>
+            </label>
+            <div class="col-span-2 space-y-6">
+                <button type="submit" class="form__input--submit">Regístrate</button>
+                <p class="text-center">¿Ya tienes una cuenta? <a href="/app/login" class="link">Inicia sesión</a></p>
+            </div>
+    </form>
+</div>
+
+
 
 <%- include('./templates/footer.ejs') %>
