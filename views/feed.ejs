@@ -1,7 +1,31 @@
 <%- include('./templates/short-header.ejs') %>
 
-<%- include("./templates/bottom-menu.ejs"); %>
-
-
+<section class="bg-white min-h-screen relative flex flex-col">
+    <%- include("./templates/bottom-menu.ejs"); %>
+    <div class="pb-[4rem] grid grid-cols-[192px_1fr_192px] flex-grow justify-items-center">
+        <a href="/app/post/new" class="
+        row-start-1
+        col-start-3 
+        top-[calc(100vh_-_4rem_-_2rem_-_4rem)] 
+        sticky 
+        h-[4rem] 
+        aspect-square 
+        bg-cyan-800 
+        rounded-full 
+        text-white
+        flex
+        items-center
+        justify-center
+        text-2xl
+        hover:bg-cyan-950
+        transition-colors
+        ">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+        <div class="w-full pb-12 relative col-start-2 row-start-1">
+            fsfsdfs
+        </div>
+    </div>
+</section>
 
 <%- include('./templates/footer/footer.ejs') %>
