@@ -9,12 +9,23 @@ flex
 flex-col
 items-center
 justify-center
-">
+bg-white
+px-48
+relative
+shadow-2xl
+"
+>
+    <img src="/assets/login--blob-1.png" alt="" class="absolute left-0 bottom-0 h-3/4">
+    <img src="/assets/login--blob-2.png" alt="" class="absolute right-0 top-0 h-3/4">
     <h1 class="
+    w-full
     font-krona
     text-6xl
+    text-left
     ">Iniciar sesión</h1>
     <p class="
+    w-full
+    text-left
     font-inter
     text-2xl
     mb-16
@@ -24,14 +35,10 @@ justify-center
     <div class="
     grid
     grid-cols-2
-    bg-white
-    shadow-2xl
-    p-8
-    w-3/4
     gap-4
-    rounded-xl
+    isolate
     ">
-        <img src="/assets/portada--botella-de-plástico-1.png" alt="" srcset="">
+
         <form action="/app/login" method="post" class="flex flex-col justify-between">
             <section class="
             space-y-12
@@ -55,7 +62,10 @@ justify-center
                 <p class="text-center">¿No tienes una cuenta? <a href="/app/signup" class="link">Regístrate</a></p>
             </div>
         </form>
+        <div class="w-full">
+            <img src="/assets/todoist-image.jpg" alt="" srcset="" class="max-w-full max-h-full">
+        </div>
     </div>
 </div>
 
-<%- include('./templates/footer.ejs') %>
+<%- include('./templates/footer/footer.ejs') %>

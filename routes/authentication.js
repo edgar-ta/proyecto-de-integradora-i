@@ -47,9 +47,9 @@ const redirectIfNotLoggedIn = (request, response, next) => {
 
 router.get("/app", (request, response) => response.redirect("/app/login"));
 
-router.get("/app/login", redirectIfLoggedIn, (request, response) => response.render("log-in") );
+router.get("/app/login", redirectIfLoggedIn, (request, response) => response.render("log-in"));
 
-router.get( "/app/signup", redirectIfLoggedIn, (request, response) => response.render("sign-up") );
+router.get("/app/signup", redirectIfLoggedIn, (request, response) => response.render("sign-up"));
 
 router.post("/app/login", redirectIfLoggedIn, passport.authenticate("local", { successRedirect: "/app/feed", failureRedirect: "/app/login" }));
 
@@ -75,7 +75,7 @@ router.get("/app/logout", redirectIfNotLoggedIn, (request, response, next) => {
 });
 
 router.get("/app/feed", redirectIfNotLoggedIn, (request, response) => {
-    response.render("feed");
+    response.render("feed", { selectedPage: "feed" });
 });
 // router.get("/app/store");
 // router.get("/app/account");

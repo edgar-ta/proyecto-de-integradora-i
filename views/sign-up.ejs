@@ -10,12 +10,23 @@ flex
 flex-col
 items-center
 justify-center
+bg-white
+px-48
+shadow-2xl
+relative
 ">
+    <img src="/assets/sign-up--blob-1.png" alt="" class="absolute top-0 right-0 h-3/4">
+    <img src="/assets/sign-up--blob-2.png" alt="" class="absolute bottom-0 left-0 h-3/4">
+
     <h1 class="
     font-krona
     text-6xl
+    w-full
+    text-left
     ">Regístrate</h1>
     <p class="
+    w-full
+    text-left
     font-inter
     text-2xl
     mb-16
@@ -26,12 +37,10 @@ justify-center
         grid
         grid-cols-2
         bg-white
-        shadow-2xl
-        p-8
-        w-3/4
         gap-4
-        rounded-xl
         gap-y-12
+        w-full
+        isolate
         ">
             <label for="fullNameInput" class="form__input">
                 <span>
@@ -76,4 +85,4 @@ justify-center
 
 
 
-<%- include('./templates/footer.ejs') %>
+<%- include('./templates/footer/footer.ejs') %>
