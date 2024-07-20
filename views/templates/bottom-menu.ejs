@@ -1,26 +1,21 @@
 <link rel="stylesheet" href="/css/bottom-menu.css">
 
 <div class="
-min-h-[100vh]
+w-full
+sticky
+top-[calc(100vh_-_4rem)]
+h-[4rem]
+grid
+grid-cols-3
+bg-white
 ">
-
-    <div class="
-    w-full
-    sticky
-    top-[calc(100vh_-_4rem)]
-    h-[4rem]
-    grid
-    grid-cols-3
-    bg-white
-    ">
-        <a class="bottom-menu-item" href="/app/feed" <% if (selectedPage == "feed") { %> data-active="true" <% } %>>
-            <i class="fa fa-compass" aria-hidden="true"></i>&nbsp; Para ti
-        </a>
-        <a class="bottom-menu-item" href="/app/store" <% if (selectedPage == "store") { %> data-active="true" <% } %>>
-            <i class="fa-solid fa-store"></i>&nbsp; Tienda
-        </a>
-        <a class="bottom-menu-item" href="/app/account" <% if (selectedPage == "account") { %> data-active="true" <% } %>>
-            <i class="fa-solid fa-user"></i>&nbsp; Cuenta
-        </a>
-    </div>
+    <a class="bottom-menu-item" href="/app/feed" <% if (selectedPage == "feed") { %> data-active="true" <% } %>>
+        <i class="fa fa-compass" aria-hidden="true"></i>&nbsp; Para ti
+    </a>
+    <a class="bottom-menu-item" href="/app/store" <% if (selectedPage == "store") { %> data-active="true" <% } %>>
+        <i class="fa-solid fa-store"></i>&nbsp; Tienda
+    </a>
+    <a class="bottom-menu-item" href="/app/account" <% if (selectedPage == "account") { %> data-active="true" <% } %>>
+        <i class="fa-solid fa-user"></i>&nbsp; Cuenta
+    </a>
 </div>

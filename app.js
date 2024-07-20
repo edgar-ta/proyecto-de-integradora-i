@@ -1,10 +1,15 @@
 import express from "express";
-import { env } from "process";
-import { route } from "./routes.js";
-import authenticationRoutes from "./routes/authentication.js";
+import basicRoutes from "./routes/basic-routes.js";
+import appRoutes from "./routes/app-routes.js";
 import session from "express-session";
 import sqlite from "connect-sqlite3";
 import passport from "passport";
+import path from "path";
+
+import { env } from "process";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 
 
 const SQLiteStore = sqlite(session);
@@ -44,5 +49,12 @@ app.use(session({
   app.use(passport.authenticate("session"));
   
 
-app.use("/", route);
-app.use("/", authenticationRoutes);
+const __filepath = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filepath);
+
+app.use("/css", express.static(path.join(__dirname, "css")));
+app.use("/js", express.static(path.join(__dirname, "js")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+
+app.use("/", basicRoutes);
+app.use("/", appRoutes);

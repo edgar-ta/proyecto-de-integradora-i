@@ -77,8 +77,16 @@ router.get("/app/logout", redirectIfNotLoggedIn, (request, response, next) => {
 router.get("/app/feed", redirectIfNotLoggedIn, (request, response) => {
     response.render("feed", { selectedPage: "feed" });
 });
-// router.get("/app/store");
-// router.get("/app/account");
+
+router.get("/app/account", redirectIfNotLoggedIn, async (request, response) => {
+    const user = await getUserByUsername(request.user.username);
+    if (user === undefined) return next(new Error(`The specified user doesn't exist: '${user.username}'`));
+    response.render("account", { selectedPage: "account", user });
+});
+
+router.get("/app/store", redirectIfNotLoggedIn, async (request, response, next) => {
+    response.render("store", { selectedPage: "store" });
+});
 
 
 export default router;

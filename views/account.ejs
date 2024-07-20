@@ -1,0 +1,107 @@
+<%- include('./templates/short-header.ejs') %>
+
+<link rel="stylesheet" href="/css/form.css">
+
+<section class="bg-white">
+    <%- include("./templates/bottom-menu.ejs"); %>
+    <div class="pb-[4rem]">
+        <div class="px-48 py-12">
+            <div class="border-b border-b-black mb-16">
+                <div class="flex w-full justify-between pb-4">
+                    <div class="
+                        flex 
+                        text-5xl 
+                        cursor-pointer 
+                        relative 
+
+                        after:absolute 
+                        after:bottom-[125%] 
+                        after:opacity-0 
+                        hover:after:opacity-100 
+                        after:transition-all
+                        after:left-0
+                        after:p-2
+                        after:text-base
+                        after:bg-neutral-600
+                        after:text-white
+                        after:rounded-md
+                        after:content-['Copiar_enlace']
+
+                        [&[data-copied='true']]:after:content-['Enlace_copiado']
+                        [&[data-copied='true']]:after:bg-green-800
+                        " 
+                        data-id="usernameHeader"
+                        data-copied="false"
+                        >
+                        <h1 class="font-inter font-bold">
+                            <%= user.fullName %> 
+                        </h1>
+                        <span class="text-neutral-400 ml-4">
+                            @<%= user.username %> 
+                        </span>
+                    </div>
+                    <a href="/app/logout" class="
+                    justify-center
+                    w-fit
+                    transition-colors
+                    hover:bg-neutral-400
+                    bg-neutral-600 
+                    text-white
+                    p-4
+                    ">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Cerrar sesión
+                    </a>
+                </div>
+            </div>
+            <div class="w-full grid grid-cols-[16rem_1fr]">
+                <div class="aspect-square overflow-hidden rounded-full h-full">
+                    <img src="<%= user.profilePicture %>" alt="" class="max-w-full max-h-full">
+                </div>
+                <label for="" class="form__input" data-disabled="disabled">
+                    <span>Bio</span>
+                    <textarea name="" id="" disabled class="resize-none" placeholder="Descripción"><%= user.bio %></textarea>
+                </label>
+            </div>
+
+            <div class="grid grid-cols-2 gap-12">
+                <label for="" class="form__input" data-disabled="disabled">
+                    <span>Contraseña</span>
+                    <input type="text" name="" id="" value="<%= user.password %>" data-true-type="password" disabled placeholder="*****">
+                </label>
+                <label for="" class="form__input" data-disabled="disabled">
+                    <span>Correo electrónico</span>
+                    <input type="email" name="" id="" value="<%= user.email %>" disabled placeholder="correo@ejemplo.com">
+                </label>
+                <label for="" class="form__input" data-disabled="disabled">
+                    <span>Género</span>
+                    <select name="" id="" disabled>
+                        <option value="0" <% if(user.gender == 0) { %> selected="selected" <% } %> >Masculino</option>
+                        <option value="1" <% if(user.gender == 1) { %> selected="selected" <% } %> >Femenino</option>
+                        <option value="2" <% if(user.gender == 2) { %> selected="selected" <% } %> >Otro</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function copyOnClick(querySelector, callback = (e) => {}) {
+    const usernameHeader = document.querySelector(querySelector);
+    usernameHeader.addEventListener("mouseenter", () => usernameHeader.setAttribute("data-copied", "false"));
+    usernameHeader.addEventListener("mousedown", (e) => {
+        usernameHeader.setAttribute("data-copied", "true");
+        callback(e);
+    });
+}
+
+copyOnClick("[data-id='usernameHeader']", () => {
+    const userLink = `${window.location.origin}/app/user/<%= user.username %>`;
+    console.log(userLink);
+    navigator.clipboard.writeText(userLink);
+});
+</script>
+
+
+<%- include('./templates/footer/footer.ejs') %>

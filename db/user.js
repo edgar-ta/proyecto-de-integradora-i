@@ -1,5 +1,6 @@
 import { format } from "mysql2";
 import { DbConnection } from "./db-connection.js";
+import renameProperty from "../js/rename-property.js";
 
 /**
  * @typedef {Object} UserRecord
@@ -34,6 +35,9 @@ async function getUserByUsername(username) {
     } finally {
         await connection.disconnect();
     }
+
+    renameProperty(user, "full_name", "fullName");
+    renameProperty(user, "profile_picture", "profilePicture");
 
     return user;
 }

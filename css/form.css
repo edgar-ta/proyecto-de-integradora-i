@@ -5,11 +5,16 @@
     font-family: Inter;
 }
 
-.form__input > input, .form__input > select {
+.form__input > input, .form__input > select, .form__input > textarea {
     padding-inline: 1rem;
     padding-block: 0.5rem;
     border-bottom: 1px solid #e0e0e0;
     transition: 200ms ease-in-out border-bottom-color; 
+}
+
+.form__input[data-disabled="disabled"] > input, .form__input[data-disabled="disabled"] > select, .form__input[data-disabled="disabled"] > textarea {
+    border-bottom-color: #707070;
+    background-color: rgb(235, 235, 235);
 }
 
 .form__input > input:focus {
