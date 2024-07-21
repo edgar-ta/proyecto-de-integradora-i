@@ -101,7 +101,7 @@ router.get("/app/feed", redirectIfNotLoggedIn, async (request, response) => {
         postCardDatum.postFormattedCreationDate = formatDistanceToNow(postCardDatum.postCreationDate, { locale: es, includeSeconds: true });
         return postCardDatum;
     });
-    console.log(postCardData);
+    // console.log(postCardData);
     response.render("feed", { selectedPage: "feed", postCardData });
 });
 
@@ -148,7 +148,7 @@ router.post("/app/post/new", redirectIfNotLoggedIn, upload.single("coverImage"),
                 author: user.id,
                 content: request.body.content,
                 coverImage: image.id,
-                summary: request.body.content
+                summary: request.body.summary
             });
             console.log("El post se insertó correctamente :)");
             response.redirect(`/app/feed?${getMessageParams("El post ha sido publicado", "success")}`);

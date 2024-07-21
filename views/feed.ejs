@@ -28,33 +28,56 @@ include('./templates/short-header.ejs')
         ">
             <i class="fa-solid fa-plus"></i>
         </a>
-        <div class="w-full pb-12 relative col-start-2 row-start-1">
+        <div class="w-full pb-12 relative col-start-2 row-start-1 grid grid-cols-2 gap-x-1 gap-y-1">
             <% for (let postCardDatum of postCardData) { %>
-                <a href="/app/feed/post/<%= postCardDatum.postId %>" class="grid grid-cols-2 shadow-lg p-8 gap-8">
+                <div class="grid grid-rows-[1fr_auto] shadow-xl">
                     <div class="aspect-square w-full relative overflow-hidden bg-black">
-                        <img src="<%= postCardDatum.postCoverImage %>" alt="" class="max-w-full max-h-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <img src="<%- postCardDatum.postCoverImage %>" alt="" class="max-w-full max-h-full absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     </div>
-                    <div class="flex flex-col justify-between">
-                        <div>
-                            <a class="flex h-fit" href="/app/feed/user/<%= postCardDatum.authorUsername %>">
-                                <img src="<%= postCardDatum.authorProfilePicture %>" alt="" class="max-h-8 max-w-8">
-                                <h1><%= postCardDatum.authorUsername %></h1>
+                    <div class="flex flex-col justify-between px-8 py-4 gap-1">
+                        <div class="flex justify-between h-fit">
+                            <a class="flex gap-4 h-8" href="/app/feed/user/<%- postCardDatum.authorUsername %>">
+                                <div class="aspect-square max-h-full rounded-full bg-white">
+                                    <img src="<%- postCardDatum.authorProfilePicture %>" alt="" class="max-h-full50"/>
+                                </div>
+                                <h1 class="font-bold font-inter">
+                                    <%- postCardDatum.authorUsername %>
+                                </h1>
                             </a>
-                            <p>
-                                Hace <%= postCardDatum.postFormattedCreationDate %>
-                            </p>
-                            <p>
-                                <%= postCardDatum.postSummary %>
-                            </p>
+                            <div class="h-full text-2xl flex gap-4">
+                                <a href="/app/feed/interaction?post=<%-postCardDatum.postId%>&action=like" title="Me gusta">
+                                    <i class="fa-regular fa-heart"></i>
+                                </a>
+                                <button title="Compartir">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            fdasfsdafsa
-                            fafjsalk
-                            fsadlk
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Inventore illum deserunt iusto assumenda, commodi enim nihil! Explicabo ullam eligendi, modi eveniet nobis sequi magnam voluptates alias odio amet quisquam quam?
-                        </div>
+                        <p class="
+                        text-neutral-500
+                        text-sm
+                        font-inter
+                        ">
+                            Hace <%- postCardDatum.postFormattedCreationDate %>
+                        </p>
+                        <p style="word-break: break-all;" class="font-inter">
+                            <%- postCardDatum.postSummary %>
+                        </p>
+                        <a href="/app/feed/post/<%-postCardDatum.postId%>" class="
+                            bg-emerald-950 
+                            transition-colors
+                            hover:bg-emerald-800
+                            font-inter 
+                            text-white 
+                            px-4 
+                            py-2 
+                            w-fit 
+                            text-center 
+                            min-w-[50%] 
+                            mt-8
+                            ">Ver más</a>
                     </div>
-                </a>
+                </div>
             <% } %>
         </div>
     </div>
