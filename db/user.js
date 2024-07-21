@@ -1,16 +1,17 @@
 import { format } from "mysql2";
 import { DbConnection } from "./db-connection.js";
 import renameProperty from "../js/rename-property.js";
+import * as Maybe from "monads-io/maybe";
 
 /**
  * @typedef {Object} UserRecord
  * @property {number} id
+ * @property {number?} profilePicture
  * @property {string} fullName
  * @property {number} gender
  * @property {string} email
  * @property {string} username
  * @property {string} password
- * @property {string} profilePicture
  * @property {string} bio
  * 
  */
@@ -18,50 +19,69 @@ import renameProperty from "../js/rename-property.js";
 /**
  * 
  * @param {string} username 
- * @returns {Promise<UserRecord?>}
+ * @returns {Promise<Maybe.Maybe<UserRecord>>}
  */
 async function getUserByUsername(username) {
-    let user;
     const connection = new DbConnection();
     try {
-        const sql = format("SELECT * FROM user WHERE user.username = ?", [ username ]);
-    
         await connection.connect();
-        [ [ user ] ] = await connection.connection.execute(sql);
+    
+        const [ [ user ] ] = await connection.connection.execute(
+            "SELECT * FROM user WHERE user.username = ?", 
+            [ username ]
+        );
 
+        if (user === undefined) {
+            return Maybe.none();
+        }
+
+        renameProperty(user, "full_name", "fullName");
+        renameProperty(user, "profile_picture", "profilePicture");
+
+        return Maybe.just(user);
     } catch (error) {
         throw error;
 
     } finally {
         await connection.disconnect();
     }
-
-    renameProperty(user, "full_name", "fullName");
-    renameProperty(user, "profile_picture", "profilePicture");
-
-    return user;
 }
 
 /**
  * 
+ * @param {number} id 
+ * @returns {Promise<boolean>} Whether the user exists or not
+ */
+async function checkUserById(id) {
+    const connection = new DbConnection();
+    let userExists = false;
+    try {
+        await connection.connect();
+        const [ [ count ] ] = await connection.connection.execute(format("SELECT COUNT(*) FROM user WHERE user.id = ?", [ id ]));
+        userExists = count == 1;
+    } catch (error) {
+        throw error;
+    } finally {
+        await connection.disconnect();
+    }
+
+    return userExists;
+}
+
+/**
+ * This function shouldn't do any validation whatsoever
  * @param {UserRecord} userRecord 
- * @returns {Promise<[ string, boolean ]>} Whether the user was properly inserted or not
  */
 async function insertUser(userRecord) {
     const connection = new DbConnection();
     try {
         await connection.connect();
-        const user = await getUserByUsername(userRecord.username);
-        if (user !== undefined) {
-            return [ "El nombre de usuario indicado ya existe", false ];
-        }
 
         connection.connection.config.namedPlaceholders = true;
         await connection.connection.execute(
-            "INSERT INTO user VALUES (NULL, :fullName, :gender, :email, :username, :password, '', '')", 
+            "INSERT INTO user VALUES (NULL, NULL, :fullName, :gender, :email, :username, :password, '')", 
             userRecord
         );
-        return [ null, true ];
         
     } catch (error) {
         throw error;
@@ -74,5 +94,6 @@ async function insertUser(userRecord) {
 
 export {
     getUserByUsername,
-    insertUser
+    insertUser,
+    checkUserById
 }

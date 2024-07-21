@@ -5,11 +5,12 @@ import session from "express-session";
 import sqlite from "connect-sqlite3";
 import passport from "passport";
 import path from "path";
+import dotenv from "dotenv";
 
 import { env } from "process";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
+import { v2 as cloudinary } from "cloudinary";
 
 
 const SQLiteStore = sqlite(session);
@@ -55,6 +56,15 @@ const __dirname = dirname(__filepath);
 app.use("/css", express.static(path.join(__dirname, "css")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
+app.use("/simplemde", express.static(path.join(__dirname, "node_modules/simplemde/dist")));
+
+dotenv.config();
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+});
 
 app.use("/", basicRoutes);
 app.use("/", appRoutes);

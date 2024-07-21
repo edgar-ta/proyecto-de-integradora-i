@@ -46,7 +46,7 @@ relative
                 <span>
                     Nombre completo
                 </span>
-                <input type="text" name="fullName" id="fullNameInput" autocomplete="name" required placeholder="Juan Pérez Pérez">
+                <input type="text" name="fullName" id="fullNameInput" autocomplete="name" required placeholder="Juan Pérez Pérez" maxlength="100">
             </label>
             <label for="genderInput" class="form__input">
                 <span>
@@ -62,19 +62,19 @@ relative
                 <span>
                     Correo electrónico
                 </span>
-                <input type="email" name="email" id="emailInput" autocomplete="email" required placeholder="correo@ejemplo.com">
+                <input type="email" name="email" id="emailInput" autocomplete="email" required placeholder="correo@ejemplo.com" maxlength="60">
             </label>
             <label for="usernameInput" class="form__input">
                 <span>
                     Nombre de usuario
                 </span>
-                <input type="text" name="username" id="usernameInput" autocomplete="username" required placeholder="usuario123">
+                <input type="text" name="username" id="usernameInput" autocomplete="username" required placeholder="usuario123" maxlength="20">
             </label>
             <label for="passwordInput" class="form__input">
                 <span>
                     Contraseña
                 </span>
-                <input type="password" name="password" id="passwordInput" autocomplete="current-password" required>
+                <input type="password" name="password" id="passwordInput" autocomplete="current-password" required maxlength="20">
             </label>
             <div class="col-span-2 space-y-6">
                 <button type="submit" class="form__input--submit">Regístrate</button>

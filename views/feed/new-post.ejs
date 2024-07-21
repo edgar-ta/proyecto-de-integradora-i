@@ -1,0 +1,141 @@
+<%- include('../templates/short-header.ejs'); %>
+
+<link rel="stylesheet" href="/css/form.css">
+
+<script src="/simplemde/simplemde.min.js"></script>
+<link rel="stylesheet" href="/simplemde/simplemde.min.css">
+<link rel="stylesheet" href="/css/form.css">
+
+<section class="bg-white">
+    <%- include("../templates/bottom-menu.ejs"); %>
+    <div class="pb-[4rem] grid grid-cols-[192px_1fr_192px] flex-grow justify-items-center">
+        <button data-id="nextButton" class="
+        row-start-1
+        col-start-3 
+        top-[calc(100vh_-_4rem_-_2rem_-_4rem)] 
+        sticky 
+        h-[4rem] 
+        aspect-square 
+        bg-cyan-800 
+        rounded-full 
+        text-white
+        flex
+        items-center
+        justify-center
+        text-2xl
+        hover:bg-cyan-950
+        transition-all
+        hover:scale-125
+        active:scale-110
+        ">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <div class="w-full pb-12 relative col-start-2 row-start-1">
+            <h1 class="
+            w-full
+            font-krona
+            text-6xl
+            text-left
+            ">¿Qué tienes en mente?</h1>
+            <p class="
+            w-full
+            text-left
+            font-inter
+            text-2xl
+            mb-16
+            ">
+                Ingresa la información de tu publicación
+            </p>
+            <form action="/app/post/new" method="post" data-id="form" enctype="multipart/form-data">
+                <section class="grid grid-cols-3 mb-12 gap-12">
+                    <label for="coverImageInput" class="form__input--file">
+                        <span>Portada</span>
+                        <input type="file" name="coverImage" id="coverImageInput" required accept="image/*">
+                        <div>
+                            <img data-id="previewImage" src="/assets/landscape-icon.png" alt="">
+                        </div>
+                    </label>
+                    <label for="summaryInput" class="form__input col-span-2">
+                        <span>Descripción</span>
+                        <input type="text" name="summary" id="summaryInput" required maxlength="200">
+                    </label>
+                </section>
+                <label for="editorTextArea" class="">
+                    <textarea name="content" data-id="editorTextArea" cols="30" rows="10" required></textarea>
+                </label>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+
+        const editorTextArea = document.querySelector("[data-id='editorTextArea']");
+        const toolbar = [
+            { name: "bold", action: SimpleMDE.toggleBold, className: "fa fa-bold", title: "Negritas" },
+            { name: "italics", action: SimpleMDE.toggleItalics, className: "fa fa-italic", title: "Cursiva" },
+            { name: "strikethrough", action: SimpleMDE.toggleStrikethrough, className: "fa fa-strikethrough", title: "Tachado" },
+            "|",
+            { name: "heading1", action: SimpleMDE.toggleHeading1, className: "fa fa-header fa-header-x fa-header-1", title: "Título 1" },
+            { name: "heading2", action: SimpleMDE.toggleHeading2, className: "fa fa-header fa-header-x fa-header-2", title: "Título 2" },
+            { name: "heading3", action: SimpleMDE.toggleHeading3, className: "fa fa-header fa-header-x fa-header-3", title: "Título 3" },
+            { name: "link", action: SimpleMDE.drawLink, className: "fa fa-link", title: "Link" },
+            { name: "quote", action: SimpleMDE.toggleBlockquote, className: "fa fa-quote-left", title: "Cita" },
+            { name: "unordered-list", action: SimpleMDE.toggleUnorderedList, className: "fa fa-list-ul", title: "Lista con viñetas" },
+            { name: "ordered-list", action: SimpleMDE.toggleOrderedList, className: "fa fa-list-ol", title: "Lista con números" },
+            "|",
+            { name: "code", action: SimpleMDE.toggleCodeBlock, className: "fa fa-code", title: "Bloque de código" },
+            { name: "image", action: SimpleMDE.drawImage, className: "fa fa-picture-o", title: "Imagen" },
+            { name: "table", action: SimpleMDE.drawTable, className: "fa fa-table", title: "Tabla" },
+            { name: "horizontal-rule", action: SimpleMDE.drawHorizontalRule, className: "fa fa-minus", title: "Línea horizontal" },
+            "|",
+            { name: "guide", action: "https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax", className: "fa fa-question-circle", title: "Guía rápida" },
+        ];
+
+        const simplemde = new SimpleMDE({
+            element: editorTextArea,
+            toolbar,
+            spellChecker: false,
+            placeholder: "Contenido adicional"
+        });
+
+
+    /** @type {HTMLImageElement} */
+    const previewImage = document.querySelector("[data-id='previewImage']");
+
+    /** @type {HTMLInputElement} */
+    const coverImageInput = document.getElementById("coverImageInput");
+    coverImageInput.addEventListener("change", (event) => {
+        /** @type {File} */
+        const [ file ] = coverImageInput.files;
+        const extension = file.name.split(".").at(-1).toLowerCase();
+        if (!["png", "jpg", "jpeg", "webp"].includes(extension)) {
+            // should send a message somewhere
+            return;
+        }
+        
+        if (file !== undefined) {
+            previewImage.src = URL.createObjectURL(file);
+        }
+    });
+
+    /** @type {HTMLInputElement} */
+    const summaryInput = document.getElementById("summaryInput");
+
+    /** @type {HTMLFormElement} */
+    const form = document.querySelector("[data-id='form']");
+
+    /** @type {HTMLButtonElement} */
+    const nextButton = document.querySelector("[data-id='nextButton']");
+    nextButton.addEventListener("click", (e) => {
+        if (
+            coverImageInput.willValidate && 
+            simplemde.value() != "" && 
+            summaryInput.willValidate
+        ) {
+            form.submit();
+        }
+    });
+</script>
+
+<%- include('../templates/footer/footer.ejs'); %>

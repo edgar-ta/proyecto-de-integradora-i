@@ -1,15 +1,31 @@
 import express from "express";
+import * as fs from "fs";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import { getUserByUsername, insertUser } from "../db/user.js";
 import { getMessageParams } from "../js/get-message-params.js";
+import { getPostCardData, insertPost } from "../db/post.js";
+import { v2 as cloudinary } from "cloudinary";
+import { deleteImageWithPublicId, getImageById, getImageByPublicId, insertImage } from "../db/image.js";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
+import multer from "multer";
+import path from "path";
+import ensureProfilePicture from "../js/ensure-profile-picture.js";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale/es"
+
+const upload = multer({ dest: "uploads/" });
 const router = express.Router();
 
 passport.use(new LocalStrategy(async (username, password, callback) => {
     try {
-        const user = await getUserByUsername(username);
-        if (user === undefined) return callback(null, false, { message: "El usuario indicado no está registrado todavía" });
+        let user = await getUserByUsername(username);
+        if (user.isNone()) return callback(null, false, { message: "El usuario indicado no está registrado todavía" });
+
+        user = user.unwrap();
+
         if (user.password != password) return callback(null, false, { message: "El nombre de usuario y la contraseña no coinciden" });
         return callback(null, user);
     } catch (error) {
@@ -45,7 +61,7 @@ const redirectIfNotLoggedIn = (request, response, next) => {
     next(null);
 }
 
-router.get("/app", (request, response) => response.redirect("/app/login"));
+router.get("/app", redirectIfLoggedIn, (request, response) => response.redirect("/app/login"));
 
 router.get("/app/login", redirectIfLoggedIn, (request, response) => response.render("log-in"));
 
@@ -55,10 +71,15 @@ router.post("/app/login", redirectIfLoggedIn, passport.authenticate("local", { s
 
 router.post("/app/signup", redirectIfLoggedIn, async (request, response, next) => {
     try {
-        const [ error, success ] = await insertUser(request.body);
-        const messageParams = success? 
-            getMessageParams("El usuario ha sido dado de alta", "success"): 
-            getMessageParams(error, "error");
+        const previousUser = await getUserByUsername(request.body.username);
+        let messageParams;
+
+        if (previousUser.isJust()) {
+            messageParams = getMessageParams("El nombre de usuario ya está utilizado por alquien más", "error");
+        } else {
+            messageParams = getMessageParams("El usuario se dio de alta exitosamente", "success");
+            await insertUser(request.body);
+        }
 
         response.redirect(`/app/login?${messageParams}`);
     } catch (e) {
@@ -74,19 +95,73 @@ router.get("/app/logout", redirectIfNotLoggedIn, (request, response, next) => {
     })
 });
 
-router.get("/app/feed", redirectIfNotLoggedIn, (request, response) => {
-    response.render("feed", { selectedPage: "feed" });
+router.get("/app/feed", redirectIfNotLoggedIn, async (request, response) => {
+    const postCardData = (await getPostCardData()).map(postCardDatum => {
+        ensureProfilePicture(postCardDatum, "authorProfilePicture");
+        postCardDatum.postFormattedCreationDate = formatDistanceToNow(postCardDatum.postCreationDate, { locale: es, includeSeconds: true });
+        return postCardDatum;
+    });
+    console.log(postCardData);
+    response.render("feed", { selectedPage: "feed", postCardData });
 });
 
 router.get("/app/account", redirectIfNotLoggedIn, async (request, response) => {
-    const user = await getUserByUsername(request.user.username);
-    if (user === undefined) return next(new Error(`The specified user doesn't exist: '${user.username}'`));
-    response.render("account", { selectedPage: "account", user });
+    let user = (await getUserByUsername(request.user.username)).unwrap();
+    let image = null;
+
+    if (user.profilePicture != null) {
+        image = (await getImageById(user.profilePicture)).unwrap();
+    }
+
+    response.render("account", { selectedPage: "account", user, image });
 });
 
 router.get("/app/store", redirectIfNotLoggedIn, async (request, response, next) => {
     response.render("store", { selectedPage: "store" });
 });
 
+router.get("/app/post/new", redirectIfNotLoggedIn, async (request, response) => {
+    response.render("feed/new-post", { selectedPage: "feed" });
+});
+
+router.post("/app/post/new", redirectIfNotLoggedIn, upload.single("coverImage"), async (request, response, next) => {
+    try {
+        const user = (await getUserByUsername(request.user.username)).unwrap();
+
+        const __filepath = fileURLToPath(import.meta.url);
+        const __dirname = dirname(__filepath);
+
+        const temporaryPath = request.file.path;
+        const originalFileExtension = path.extname(request.file.originalname);
+        const targetPath = path.join(__dirname, `../uploads/image.${originalFileExtension}`);
+
+        fs.rename(temporaryPath, targetPath, (error) => {
+            if (error) throw error;
+        });
+
+        const uploadResult = await cloudinary.uploader.upload(targetPath);
+        try {
+            await insertImage(uploadResult.secure_url, uploadResult.public_id);
+            const image = (await getImageByPublicId(uploadResult.public_id)).unwrap();
+            
+            await insertPost({
+                author: user.id,
+                content: request.body.content,
+                coverImage: image.id,
+                summary: request.body.content
+            });
+            console.log("El post se insertó correctamente :)");
+            response.redirect(`/app/feed?${getMessageParams("El post ha sido publicado", "success")}`);
+
+        } catch (e) {
+            await cloudinary.uploader.destroy(uploadResult.public_id);
+            await deleteImageWithPublicId(uploadResult.public_id);
+            
+            throw e;
+        }
+    } catch (error) {
+        next(error);
+    }
+});
 
 export default router;

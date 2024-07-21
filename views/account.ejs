@@ -13,9 +13,10 @@
                         text-5xl 
                         cursor-pointer 
                         relative 
+                        max-w-[70%]
 
                         after:absolute 
-                        after:bottom-[125%] 
+                        after:top-full 
                         after:opacity-0 
                         hover:after:opacity-100 
                         after:transition-all
@@ -48,6 +49,7 @@
                     bg-neutral-600 
                     text-white
                     p-4
+                    h-fit
                     ">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         Cerrar sesión
@@ -56,7 +58,7 @@
             </div>
             <div class="w-full grid grid-cols-[16rem_1fr]">
                 <div class="aspect-square overflow-hidden rounded-full h-full">
-                    <img src="<%= user.profilePicture %>" alt="" class="max-w-full max-h-full">
+                    <img src="<% if (user.profilePicture == null) { %>/assets/default-profile-picture.jpg<% } else { %><%= image.secureUrl %><% }%>" alt="" class="max-w-full max-h-full">
                 </div>
                 <label for="" class="form__input" data-disabled="disabled">
                     <span>Bio</span>

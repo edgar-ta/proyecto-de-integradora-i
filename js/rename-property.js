@@ -7,6 +7,7 @@
  * @param {string} newName 
  */
 export default function renameProperty(object, previousName, newName) {
+    if (object === undefined || object == null) return;
     if (previousName in object) {
         const value = object[previousName];
         delete object[previousName];
