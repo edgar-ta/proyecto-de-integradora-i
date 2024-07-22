@@ -115,7 +115,7 @@ export async function uploadImageToCloudinary(temporaryPath, originalName) {
     const __dirname = dirname(__filepath);
 
     const originalFileExtension = path.extname(originalName);
-    const targetPath = path.join(__dirname, `../uploads/image.${originalFileExtension}`);
+    const targetPath = path.join(__dirname, `../_uploaded/image.${originalFileExtension}`);
 
     fs.rename(temporaryPath, targetPath, (error) => {
         if (error) throw error;

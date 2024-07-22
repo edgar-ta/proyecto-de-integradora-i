@@ -3,3 +3,7 @@ etc/
 sessions/
 .env
 uploads/
+_sessions/*
+_uploaded/*.jpg
+_uploaded/*.png
+_uploaded/*.webp
