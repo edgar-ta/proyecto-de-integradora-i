@@ -2,6 +2,13 @@ import { DbConnection } from "./db-connection.js";
 import renameProperty from "../js/rename-property.js";
 import * as Maybe from "monads-io/maybe";
 
+import * as fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { v2 as cloudinary } from "cloudinary";
+import path from "path";
+
+
 /**
  * @typedef {Object} ImageRecord
  * @property {number} id
@@ -98,3 +105,21 @@ export async function deleteImageWithPublicId(publicId) {
     }
 }
 
+/**
+ * 
+ * @param {string} temporaryPath 
+ * @returns {Promise<UploadApiResponse>}
+ */
+export async function uploadImageToCloudinary(temporaryPath, originalName) {
+    const __filepath = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filepath);
+
+    const originalFileExtension = path.extname(originalName);
+    const targetPath = path.join(__dirname, `../uploads/image.${originalFileExtension}`);
+
+    fs.rename(temporaryPath, targetPath, (error) => {
+        if (error) throw error;
+    });
+
+    return cloudinary.uploader.upload(targetPath);
+}

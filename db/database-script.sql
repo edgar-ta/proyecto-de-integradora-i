@@ -97,3 +97,11 @@ INSERT INTO interaction_type VALUES (1, "like");
 INSERT INTO interaction_type VALUES (2, "share");
 INSERT INTO interaction_type VALUES (3, "dislike");
 
+CREATE OR REPLACE VIEW likes_per_post AS (
+	SELECT 
+		interaction.post AS post, 
+        COUNT(*) AS likes_count
+	FROM interaction
+    GROUP BY interaction.post
+);
+

@@ -1,5 +1,11 @@
 <%- include('../templates/short-header.ejs'); %>
 
+<%
+
+const isEdit = typeof post !== "undefined";
+
+%>
+
 <link rel="stylesheet" href="/css/form.css">
 
 <script src="/simplemde/simplemde.min.js"></script>
@@ -46,22 +52,25 @@
             ">
                 Ingresa la información de tu publicación
             </p>
-            <form action="/app/post/new" method="post" data-id="form" enctype="multipart/form-data">
+            <form action=<% if (isEdit) {%> "/app/post/edit/<%- post.id %>" <%} else {%> "/app/post/new" <%}%> method="post" data-id="form" enctype="multipart/form-data">
                 <section class="grid grid-cols-3 mb-12 gap-12">
                     <label for="coverImageInput" class="form__input--file">
                         <span>Portada</span>
                         <input type="file" name="coverImage" id="coverImageInput" required accept="image/*">
                         <div>
-                            <img data-id="previewImage" src="/assets/landscape-icon.png" alt="">
+                            <img data-id="previewImage" 
+                                src=<%if (isEdit) {%> "<%- coverImage.secureUrl %>" <%} else {%> "/assets/landscape-icon.png" <%}%> 
+                                alt=""
+                                >
                         </div>
                     </label>
                     <label for="summaryInput" class="form__input col-span-2">
                         <span>Descripción</span>
-                        <input type="text" name="summary" id="summaryInput" required maxlength="200">
+                        <input type="text" name="summary" id="summaryInput" required maxlength="200" <%if (isEdit) {%> value="<%= post.summary %>" <%}%> >
                     </label>
                 </section>
                 <label for="editorTextArea" class="">
-                    <textarea name="content" data-id="editorTextArea" cols="30" rows="10" required></textarea>
+                    <textarea name="content" data-id="editorTextArea" cols="30" rows="10" required><%if (isEdit) {%><%= post.content %><%}%></textarea>
                 </label>
             </form>
         </div>
@@ -69,7 +78,6 @@
 </section>
 
 <script>
-
         const editorTextArea = document.querySelector("[data-id='editorTextArea']");
         const toolbar = [
             { name: "bold", action: SimpleMDE.toggleBold, className: "fa fa-bold", title: "Negritas" },

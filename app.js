@@ -46,8 +46,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     store: new SQLiteStore({ db: "sessions.db", dir: "./sessions" })
-  }));
-  app.use(passport.authenticate("session"));
+}));
+app.use(passport.authenticate("session"));
   
 
 const __filepath = fileURLToPath(import.meta.url);

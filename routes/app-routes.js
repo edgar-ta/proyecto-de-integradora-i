@@ -1,20 +1,16 @@
 import express from "express";
-import * as fs from "fs";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import { getUserByUsername, insertUser } from "../db/user.js";
 import { getMessageParams } from "../js/get-message-params.js";
-import { getPostCardData, insertPost } from "../db/post.js";
+import { deletePostWithId, getPostById, getPostCardDataForUser, insertPost, updatePropertiesOfPost, updatePropertyOfPost } from "../db/post.js";
 import { v2 as cloudinary } from "cloudinary";
-import { deleteImageWithPublicId, getImageById, getImageByPublicId, insertImage } from "../db/image.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+import { deleteImageWithPublicId, getImageById, getImageByPublicId, insertImage, uploadImageToCloudinary } from "../db/image.js";
 
 import multer from "multer";
-import path from "path";
-import ensureProfilePicture from "../js/ensure-profile-picture.js";
-import { formatDistanceToNow } from "date-fns";
-import { es } from "date-fns/locale/es"
+import { likePost, unlikePost } from "../db/interaction.js";
+import { v4 as uuidv4 } from "uuid";
+
 
 const upload = multer({ dest: "uploads/" });
 const router = express.Router();
@@ -61,6 +57,20 @@ const redirectIfNotLoggedIn = (request, response, next) => {
     next(null);
 }
 
+const redirectIfDoesNotOwnPost = async (request, response, next) => {
+    try {
+        const user = (await getUserByUsername(request.user.username)).unwrap();
+        const post = (await getPostById(request.params.postId)).unwrap();
+        if (user.id != post.author) {
+            response.redirect("/app/feed");
+            return;
+        }
+        next(null);
+    } catch (error) {
+        next(error);
+    }
+}
+
 router.get("/app", redirectIfLoggedIn, (request, response) => response.redirect("/app/login"));
 
 router.get("/app/login", redirectIfLoggedIn, (request, response) => response.render("log-in"));
@@ -96,12 +106,7 @@ router.get("/app/logout", redirectIfNotLoggedIn, (request, response, next) => {
 });
 
 router.get("/app/feed", redirectIfNotLoggedIn, async (request, response) => {
-    const postCardData = (await getPostCardData()).map(postCardDatum => {
-        ensureProfilePicture(postCardDatum, "authorProfilePicture");
-        postCardDatum.postFormattedCreationDate = formatDistanceToNow(postCardDatum.postCreationDate, { locale: es, includeSeconds: true });
-        return postCardDatum;
-    });
-    // console.log(postCardData);
+    const postCardData = await getPostCardDataForUser(request.user.username);
     response.render("feed", { selectedPage: "feed", postCardData });
 });
 
@@ -127,19 +132,8 @@ router.get("/app/post/new", redirectIfNotLoggedIn, async (request, response) => 
 router.post("/app/post/new", redirectIfNotLoggedIn, upload.single("coverImage"), async (request, response, next) => {
     try {
         const user = (await getUserByUsername(request.user.username)).unwrap();
+        const uploadResult = await uploadImageToCloudinary(request.file.path, request.file.originalname);
 
-        const __filepath = fileURLToPath(import.meta.url);
-        const __dirname = dirname(__filepath);
-
-        const temporaryPath = request.file.path;
-        const originalFileExtension = path.extname(request.file.originalname);
-        const targetPath = path.join(__dirname, `../uploads/image.${originalFileExtension}`);
-
-        fs.rename(temporaryPath, targetPath, (error) => {
-            if (error) throw error;
-        });
-
-        const uploadResult = await cloudinary.uploader.upload(targetPath);
         try {
             await insertImage(uploadResult.secure_url, uploadResult.public_id);
             const image = (await getImageByPublicId(uploadResult.public_id)).unwrap();
@@ -154,11 +148,104 @@ router.post("/app/post/new", redirectIfNotLoggedIn, upload.single("coverImage"),
             response.redirect(`/app/feed?${getMessageParams("El post ha sido publicado", "success")}`);
 
         } catch (e) {
-            await cloudinary.uploader.destroy(uploadResult.public_id);
-            await deleteImageWithPublicId(uploadResult.public_id);
+            await cloudinary.uploader.destroy(uploadResult.public_id)
+                .finally(() => deleteImageWithPublicId(uploadResult.public_id));
             
             throw e;
         }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/app/post/like/:postId", redirectIfNotLoggedIn, async (request, response, next) => {
+    try {
+        let post = await getPostById(request.params.postId);
+        if (post.isJust()) {
+            post = post.unwrap();
+            await likePost(request.user.username, request.params.postId);
+        }
+        response.redirect("/app/feed");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/app/post/unlike/:postId", redirectIfNotLoggedIn, async (request, response, next) => {
+    try {
+        let post = await getPostById(request.params.postId);
+        if (post.isJust()) {
+            post = post.unwrap();
+            await unlikePost(request.user.username, request.params.postId);
+        }
+        response.redirect("/app/feed");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/app/post/delete/:postId", redirectIfNotLoggedIn, redirectIfDoesNotOwnPost, async (request, response, next) => {
+    try {
+        const post = (await getPostById(request.params.postId)).unwrap();
+        const image = (await getImageById(post.coverImage)).unwrap();
+
+        await cloudinary.uploader.destroy(image.publicId);
+        await deleteImageWithPublicId(image.publicId);
+
+        await deletePostWithId(request.params.postId);
+        response.redirect("/app/feed");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/app/post/edit/:postId", redirectIfNotLoggedIn, redirectIfDoesNotOwnPost, async (request, response, next) => {
+    try {
+        const post = (await getPostById(request.params.postId)).unwrap();
+        const coverImage = (await getImageById(post.coverImage)).unwrap();
+
+        console.log(post);
+
+        response.render("feed/new-post", { 
+            post, 
+            coverImage,
+            selectedPage: "feed" 
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/app/post/edit/:postId", redirectIfNotLoggedIn, redirectIfDoesNotOwnPost, upload.single("coverImage"), async (request, response, next) => {
+    try {
+        const post = (await getPostById(request.params.postId)).unwrap();
+        const previousCoverImage = (await getImageById(post.coverImage)).unwrap();
+
+        if (request.file !== undefined) {
+            // a new image was selected; thus, the old one must be deleted
+            const uploadResult = await uploadImageToCloudinary(request.file.path, request.file.originalname);
+            try {
+                await insertImage(uploadResult.secure_url, uploadResult.public_id);
+                const newImage = (await getImageByPublicId(uploadResult.public_id)).unwrap();
+
+                await updatePropertyOfPost(request.params.postId, "cover_image", newImage.id);
+
+            } catch (error) {
+                await cloudinary.uploader.destroy(uploadResult.public_id)
+                    .finally(() => deleteImageWithPublicId(uploadResult.public_id));
+
+                throw error;
+            }
+
+            await deleteImageWithPublicId(previousCoverImage.publicId);
+        }
+
+        await updatePropertiesOfPost(request.params.postId, {
+            content: request.body.content,
+            summary: request.body.summary
+        });
+
+        response.redirect("/app");
     } catch (error) {
         next(error);
     }
