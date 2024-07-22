@@ -53,32 +53,41 @@ export async function getPostCardDataForUser(username) {
     const connection = new DbConnection();
     try {
         await connection.connect();
-        const [ data ] = await connection.connection.execute(`
-    SELECT 
-        post.id AS postId,
-        post.summary AS postSummary,
-        post.creation_date AS postCreationDate,
-        author.username AS authorUsername,
-        profile_picture.secure_url AS authorProfilePicture,
-        cover_image.secure_url AS postCoverImage,
-        likes_per_post.likes_count AS postLikesCount,
-        author.username = ? AS userOwnsPost,
-        post.id IN (
-            SELECT interaction.post
-            FROM interaction
-            INNER JOIN user ON interaction.user = user.id
-            WHERE user.username = ?
-        ) AS userLikesPost
-    FROM post 
-    INNER JOIN user AS author ON post.author = author.id
-    INNER JOIN image AS cover_image ON post.cover_image = cover_image.id
-    LEFT JOIN image AS profile_picture ON author.profile_picture = profile_picture.id
-    LEFT JOIN likes_per_post ON likes_per_post.post = post.id
-    ORDER BY post.creation_date DESC
-    LIMIT 10
-            `,
+        const sql = format(
+            `SELECT 
+                post.id AS postId,
+                post.summary AS postSummary,
+                post.creation_date AS postCreationDate,
+                author.username AS authorUsername,
+                profile_picture.secure_url AS authorProfilePicture,
+                cover_image.secure_url AS postCoverImage,
+                likes_per_post.likes_count AS postLikesCount,
+                author.username = ? AS userOwnsPost,
+                post.id IN (
+                    SELECT interaction.post
+                    FROM interaction
+                    INNER JOIN user ON interaction.user = user.id
+                    WHERE user.username = ?
+                ) AS userLikesPost
+            FROM post 
+            INNER JOIN user AS author ON post.author = author.id
+            INNER JOIN image AS cover_image ON post.cover_image = cover_image.id
+            LEFT JOIN image AS profile_picture ON author.profile_picture = profile_picture.id
+            LEFT JOIN (
+                    SELECT 
+                        interaction.post AS post, 
+                        COUNT(*) AS likes_count
+                    FROM interaction
+                    GROUP BY interaction.post
+                )
+                AS likes_per_post 
+                ON likes_per_post.post = post.id
+            ORDER BY post.creation_date DESC
+            LIMIT 10`,
             [ username, username ]
+
         );
+        const [ data ] = await connection.connection.execute(sql);
         data.map(postCardDatum => {
             ensureProfilePicture(postCardDatum, "authorProfilePicture");
             if (postCardDatum.postLikesCount === null) {
@@ -104,10 +113,11 @@ export async function insertPost(post) {
     const connection = new DbConnection();
     try {
         await connection.connect();
-        await connection.connection.execute(
+        const sql = format(
             "INSERT INTO post VALUES (NULL, ?, ?, NOW(), ?, ?)", 
             [ post.author, post.coverImage, post.summary, post.content ]
         );
+        await connection.connection.execute(sql);
     } catch (error) {
         throw error;
         

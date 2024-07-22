@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS integradora_i;
-CREATE DATABASE integradora_i;
-
-USE integradora_i;
+USE bstb3xpjbhdg29eywvfu;
 
 DROP TABLE IF EXISTS opinion;
 CREATE TABLE IF NOT EXISTS opinion(
 	id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(40) NOT NULL,
+    nombre VARCHAR(40) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
     correo VARCHAR(40) NOT NULL,
     conocimientoDeReciclaje VARCHAR(10) NOT NULL,
     conocimientoDeFilamento VARCHAR(10) NOT NULL,
@@ -27,12 +27,24 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE IF NOT EXISTS user (
     id INT NOT NULL AUTO_INCREMENT,
     profile_picture INT,
-    full_name VARCHAR(100) NOT NULL,
+    full_name VARCHAR(100) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
     gender INT NOT NULL,
     email VARCHAR(60) NOT NULL,
-    username VARCHAR(20) NOT NULL,
-    password VARCHAR(20) NOT NULL,
-    bio VARCHAR(200) NOT NULL,
+    username VARCHAR(20) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
+    password VARCHAR(20) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
+    bio VARCHAR(200) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
 
     PRIMARY KEY(id),
     FOREIGN KEY (profile_picture) REFERENCES image(id)
@@ -49,8 +61,14 @@ CREATE TABLE IF NOT EXISTS post(
     author INT NOT NULL,
     cover_image INT NOT NULL,
     creation_date DATETIME NOT NULL,
-    summary VARCHAR(200) NOT NULL,
-    content TEXT NOT NULL,
+    summary VARCHAR(200) 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
+    content TEXT 
+		CHARACTER SET utf8mb4
+        COLLATE utf8mb4_spanish2_ci
+		NOT NULL,
 
     PRIMARY KEY(id),
     FOREIGN KEY(author) REFERENCES user(id)
@@ -104,4 +122,3 @@ CREATE OR REPLACE VIEW likes_per_post AS (
 	FROM interaction
     GROUP BY interaction.post
 );
-

@@ -29,18 +29,36 @@ passport.use(new LocalStrategy(async (username, password, callback) => {
     }
 }));
 
+const logOutOfSession = (request, response) => {
+    request.logOut((error) => {
+        if (error) throw error;
+        response.redirect("/app/login");
+        console.log("El usuario cerró su sesión correctamente");
+    })
+}
+
+
 /**
  * Redorects the user to the feed if they are logged in
  * @param {import("express").Request} request 
  * @param {import("express").Response} response 
  * @param {import("express").NextFunction} next 
  */
-const redirectIfLoggedIn = (request, response, next) => {
-    if (request.user !== undefined) {
-        response.redirect("/app/feed");
-        return;
+const redirectIfLoggedIn = async (request, response, next) => {
+    try {
+        if (request.user !== undefined) {
+            const user = await getUserByUsername(request.user.username);
+            if (user.isJust()) {
+                response.redirect("/app/feed");
+            } else {
+                logOutOfSession(request, response);
+            }
+        }
+        next(null);
+
+    } catch(error) {
+        next(error);
     }
-    next(null);
 }
 
 /**
@@ -49,12 +67,24 @@ const redirectIfLoggedIn = (request, response, next) => {
  * @param {import("express").Response} response 
  * @param {import("express").NextFunction} next 
  */
-const redirectIfNotLoggedIn = (request, response, next) => {
-    if (request.user === undefined) {
-        response.redirect("/app/login");
-        return;
+const redirectIfNotLoggedIn = async (request, response, next) => {
+    try {
+        if (request.user === undefined) {
+            response.redirect("/app/login");
+            return;
+        }
+    
+        const user = await getUserByUsername(request.user.username);
+        if (user.isNone()) {
+            logOutOfSession(request, response);
+            response.redirect("/app/logout");
+        }
+    
+        next(null);
+
+    } catch (error) {
+        next(error);
     }
-    next(null);
 }
 
 const redirectIfDoesNotOwnPost = async (request, response, next) => {

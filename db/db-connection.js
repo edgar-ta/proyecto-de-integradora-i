@@ -9,11 +9,11 @@ class DbConnection {
     async connect() {
         try {
             this.connection = await this.mysql.createConnection({
-                host: "127.0.0.5",
-                user: "root",
-                password: "root",
-                database: "integradora_i",
-                port: "3306"
+                host: process.env.CLEVER_CLOUD_HOST,
+                database: process.env.CLEVER_CLOUD_DATABASE,
+                user: process.env.CLEVER_CLOUD_USER,
+                password: process.env.CLEVER_CLOUD_PASSWORD,
+                port: process.env.CLEVER_CLOUD_PORT,
             });
             console.log("Conexión creada");
         } catch (error) {
