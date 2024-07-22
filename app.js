@@ -57,6 +57,7 @@ app.use("/css", express.static(path.join(__dirname, "css")));
 app.use("/js", express.static(path.join(__dirname, "js")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/simplemde", express.static(path.join(__dirname, "node_modules/simplemde/dist")));
+app.use("/aos", express.static(path.join(__dirname, "node_modules/aos/dist")));
 
 dotenv.config();
 cloudinary.config({

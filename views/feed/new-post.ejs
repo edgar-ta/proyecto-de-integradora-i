@@ -136,13 +136,20 @@ const isEdit = typeof post !== "undefined";
     /** @type {HTMLButtonElement} */
     const nextButton = document.querySelector("[data-id='nextButton']");
     nextButton.addEventListener("click", (e) => {
-        if (
-            coverImageInput.willValidate && 
-            simplemde.value() != "" && 
-            summaryInput.willValidate
-        ) {
-            form.submit();
+        if (!coverImageInput.checkValidity()) {
+            console.log("Setting a custom validity message");
+            coverImageInput.setCustomValidity("Selecciona una imagen");
+            return;
         }
+        if (simplemde.value() == "") {
+            return;
+        }
+
+        if (!summaryInput.checkValidity()) {
+            return;
+        }
+
+        form.submit();
     });
 </script>
 

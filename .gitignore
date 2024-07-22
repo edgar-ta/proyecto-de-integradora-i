@@ -7,3 +7,4 @@ _sessions/*
 _uploaded/*.jpg
 _uploaded/*.png
 _uploaded/*.webp
+sessions.db

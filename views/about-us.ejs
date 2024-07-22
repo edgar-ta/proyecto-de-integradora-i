@@ -1,5 +1,110 @@
-<%- include('./templates/header.ejs') %>
+<%- include('./templates/short-header.ejs') %>
 
-<h1>About us</h1>
+<script src="/aos/aos.js"></script>
+<link rel="stylesheet" href="/aos/aos.css">
+<link rel="stylesheet" href="/css/has-background-image.css">
+<script>
+    AOS.init();
+</script>
+
+<section class="text-6xl py-24 bg-white text-black border-b border-b-black">
+    <h1 class="font-krona mb-12 px-48">
+        ¿Quiénes somos?
+    </h1>
+    <div class="grid gap-1" style="
+    grid-template-areas: 
+        'a a b c'
+        'a a d e'
+        ;
+    ">
+        <div style="grid-area: a;" class="bg-emerald-800 aspect-square w-full">
+            <div style="
+                background-image: url('/assets/team-picture.jpg'); 
+            " class="aspect-square w-full has-background-image" 
+                data-aos="fade-right"
+                data-aos-offset="300"
+                >
+            </div>
+        </div>
+        <div style="grid-area: b;" class="bg-cyan-800 aspect-square w-full">
+            <div style="
+                background-image: url('/assets/team-member--carlos--elegante.jpeg');
+                " 
+                class="bg-black aspect-square w-full has-background-image"
+                data-aos="fade-right"
+                data-aos-offset="400"
+                >
+            </div>
+        </div>
+        <div style="grid-area: c;" class="bg-amber-700 aspect-square w-full">
+            <div style="
+                grid-area: c; 
+                background-image: url('/assets/team-member--edgar--elegante.jpeg');
+                " 
+                class="bg-black aspect-square w-full has-background-image"
+                data-aos="fade-down"
+                data-aos-offset="500"
+                >
+            </div>
+        </div>
+        <div style="grid-area: d;" class="bg-black aspect-square w-full">
+            <div style="
+                grid-area: d; 
+                background-image: url('/assets/team-member--ulises--elegante.jpeg');
+                " 
+                class="bg-black aspect-square w-full has-background-image"
+                data-aos="fade-up"
+                data-aos-anchor-placement="center-bottom"
+                >
+            </div>
+        </div>
+        <div style="grid-area: e;" class="bg-emerald-950 aspect-square w-full">
+            <div style="
+                grid-area: e; 
+                background-image: url('/assets/isotipo--colorido--medio.png');
+                background-size: contain;
+                " class="aspect-square w-full has-background-image"
+                data-aos="fade-left"
+                data-aos-anchor-placement="center-bottom"
+            >
+            </div>
+        </div>
+    </div>
+    <div class="text-base font-inter space-y-64 py-64">
+        <p class="px-48 font-serif-display text-6xl text-neutral-700" data-aos="fade-up" data-aos-easing="ease-out-cubic">
+            Dart es un equipo de desarrollo fundado en la Universidad Tecnológica de San Juan del Río a partir del 2024. 
+        </p>
+        <div class="grid grid-cols-3 w-full">
+            <div class="col-start-2 w-full aspect-video col-span-2 has-background-image" style="background-image: url('/assets/utsjr.jpg');" data-aos="fade-up" data-aos-easing="ease-out-cubic"></div>
+        </div>
+        <p class="font-serif-display text-6xl text-neutral-700 px-48" data-aos="fade-up" data-aos-easing="ease-out-cubic">
+            Al tener frente a ellos el reto de buscar soluciones a problemáticas relevantes en su entorno,
+            el equipo identificó un área de oportunidad en resolver un problema ambiental que ha afectado 
+            significativamente a la región: la distribución y acumulación de residuos de PET.
+        </p>
+        <div class="grid grid-cols-3 w-full">
+            <div class="col-start-1 w-full aspect-video col-span-2 has-background-image" style="background-image: url('/assets/pet-residuals.jpg');" data-aos="fade-up" data-aos-easing="ease-out-cubic"></div>
+        </div>
+
+        <p class="font-serif-display text-6xl text-neutral-700 px-48" data-aos="fade-up" data-aos-easing="ease-out-cubic">
+            Es así como Dart presenta la primera etapa de su proyecto de Integradora I, denominado "Desarrollo de una página web para gestión de máquina generadora de filamento". 
+        </p>
+
+        <p class="font-serif-display text-6xl text-neutral-700 px-48" data-aos="fade-up" data-aos-easing="ease-out-cubic">
+            De esta manera, se busca promover conciencia y acción en temas como el reciclaje, la economía circular y el cuidado del medio ambiente.
+        </p>
+        <div class="grid grid-cols-3 w-full">
+            <div class="col-start-1 w-full aspect-video col-span-2 has-background-image" style="background-image: url('/assets/recycling.jpeg');" data-aos="fade-up" data-aos-easing="ease-out-cubic"></div>
+        </div>
+
+        <p class="font-serif-display text-6xl text-neutral-700 px-48" data-aos="fade-up" data-aos-easing="ease-out-cubic">
+            En los próximos cuatrimestres, se espera que el proyecto de la máquina recicladora de PET, que transformará el material en filamento, sea materializado y complementado con esta aplicación web de gestión y demostración.
+        </p>
+        <div class="grid grid-cols-3 w-full">
+            <div class="col-start-2 w-full aspect-video col-span-2 has-background-image" style="background-image: url('/assets/it-project.jpg');" data-aos="fade-up" data-aos-easing="ease-out-cubic"></div>
+        </div>
+
+    </div>
+</section>
 
 <%- include('./templates/footer/footer.ejs') %>

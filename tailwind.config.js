@@ -8,7 +8,8 @@ module.exports = {
       },
       fontFamily: {
         krona: [ '"Krona One"', 'sans-serif' ],
-        inter: [ 'Inter', 'sans-serif' ]
+        inter: [ 'Inter', 'sans-serif' ],
+        'serif-display': [ 'DM Serif Display', 'serif' ]
       }
     },
   },

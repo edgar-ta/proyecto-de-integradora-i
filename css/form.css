@@ -47,7 +47,8 @@
 }
 
 .form__input--file > input {
-    display: none;
+    visibility: hidden;
+    /* display: none; */
 }
 
 .form__input--file {
